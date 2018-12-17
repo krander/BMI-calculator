@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Katie Anderson">
+    <title>Body Mass Index Calculator</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+    <script>
+        "use strict";
+        $(function() {
+
+            // Input validation
+            // Prevents submission
+            // If form invalid, return
+            $('#standardFill').validate()
+            $('#standardFill').submit(function(e) {
+                e.preventDefault();
+
+                if (!$('#standardFill').valid()) return;
+
+                // If strings, apply isNaN
+                function calcImperialBMIFeetAndInches(heightInFeet, heightInInches, weightInPounds) {
+
+                    heightInFeet = Number(heightInFeet);
+                    heightInInches = Number(heightInInches);
+                    weightInPounds = Number(weightInPounds);
+
+                    if (isNaN(heightInFeet) || isNaN(heightInInches) || isNaN(weightInPounds)) {
+                        console.log("calcImperialBMIFeetAndInches - expects all inputs valid numbers");
+                        throw "calcImperialBMIFeetAndInches - expects all inputs valid numbers";
+                    }
+
+                    var height = (heightInFeet * 12) + heightInInches;
+
+                    return calcImperialBMI(height, weightInPounds);
+                }
+
+                // If strings, apply is NaN
+                function calcImperialBMI(heightInInches, weightInPounds) {
+
+                    heightInInches = Number(heightInInches);
+                    weightInPounds = Number(weightInPounds);
+
+                    if (isNaN(heightInInches) || isNaN(weightInPounds)) {
+                        console.log("calcImperialBMI - expects all inputs valid numbers");
+                        throw "calcMetricImperialBMI - expects all inputs valid numbers";
+
+                        var BMI;
+                        BMI = (weightInPounds * 703) / (heightInInches * heightInInches);
+                        return BMI;
+                    }
+                }
+
+                // Display input
+                var myForm = document.getElementById("standardFill");
+                var n1 = document.getElementById("weightInPounds").value;
+                var n2 = document.getElementById("heightInInches").value;
+                var n3 = document.getElementById("heightInFeet").value;
+                document.getElementById("BMIImperial").innerHTML = (n1 * 703) / (n3 * 12 + +n2) ** 2;
+                return false;
+            });
+
+
+            // Validation
+            // Prevents submission 
+            // If form invalid, return
+            $('#metricFill').validate()
+            $('#metricFill').submit(function() {
+                event.preventDefault();
+
+                if (!$('#metricFill').valid()) return;
+
+                function calcMetricBMICMandMM(heightInCentimeters, heightInMillimeters, weightInKilos) {
+
+                    // If string, apply isNaN
+                    heightInCentimeters = Number(heightInCentimeters);
+                    heightInMillimeters = Number(heightInMillimeters);
+                    weightInKilos = Number(weightInKilos);
+
+                    if (isNaN(heightInCentimeters) || isNaN(heightInMillimeters) || isNaN(weightInKilos)) {
+                        console.log("calcMetricBMICMandMM - expects all inputs valid numbers");
+                        throw "calcMetricBMICMandMM - expects all inputs valid numbers";
+                    }
+
+
+                    var combinedHeight = (heightInCentimeters) + (heightInMillimeters / 10);
+
+                    return calcMetricBMI(combinedHeight, weightInKilos);
+
+                }
+
+                function calcMetricBMI(heightInCentimeters, weightInKilos) {
+
+                    // If string, apply isNaN
+                    heightInCentimeters = Number(heightInCentimeters);
+                    weightInKilos = Number(weightInKilos);
+
+                    if (isNaN(heightInCentimeters) || isNaN(weightInKilos)) {
+                        console.log("calcMetricBMI - expects all inputs valid numbers");
+                        throw "expects all inputs valid numbers";
+                    }
+
+                    var BMI;
+                    var heightInMeters = heightInCentimeters / 100;
+                    BMI = (weightInKilos) / (heightInMeters * heightInMeters);
+                    return BMI;
+                }
+
+                var myForm2 = document.getElementById("metricFill");
+                var j1 = document.getElementById("heightInCentimeters").value;
+                var j2 = document.getElementById("weightInKilos").value;
+                document.getElementById("BMIMetric").innerHTML = j2 / (j1 / 100) ** 2;
+                return false;
+            });
+
+            // Dialog box, tabs, etc visual elements          
+            $("#tabs").tabs();
+
+            // Calculator
+            $("#calculator").dialog({
+                draggable: false,
+                width: 600
+            });
+        });
+    </script>
+    
+    <style>
+        body {
+            background-color: #E7E7E7;
+        }
+
+        #TopContent {
+            font-family: sans-serif;
+        }
+
+        #SideBMI {
+            text-align: center;
+            float: right;
+        }
+
+        #tabs {
+            width: 20em;
+            height: 20em;
+            text-align: center;
+            float: left;
+        }
+
+        input {
+            width: 3.5em;
+        }
+
+        label.error {
+            display: block;
+            float: left;
+            color: #C70039;
+            font-size: 0.05em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        input.error {
+            background: rgba(199, 0, 57, 0.2);
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="TopContent">
+        <h1>Body Mass Index Calculator</h1>
+        <p>Body mass index (BMI) is a measure of body fat based on height and weight that applies to adult men and women.</p>
+        <ol>
+            <li>Enter your weight and height using standard or metric measures.</li>
+            <li>Select "Submit" and your BMI will appear below.</li>
+        </ol>
+        <br>
+    </div>
+
+
+    <div hidden id="calculator" title="Calculate" id="realcalc">
+        <div id="SideBMI">
+            <h3>BMI Categories</h3>
+            <p>Underweight = &le;18.5<br> Normal weight = 18.5 - 24.9<br> Overweight = 25 - 29.9<br> Obesity = &ge;30</p><br>
+            <b><a href="https://www.nhlbi.nih.gov/health/educational/lose_wt/BMI/bmi_tbl.htm"> The BMI Tables</a></b><br><br>
+            <b><a href="https://www.nhlbi.nih.gov/health/educational/lose_wt/index.htm">Aim for a Health Weight:</a></b><br>
+            <a href="https://www.nhlbi.nih.gov/health/educational/lose_wt/risk.htm#limitations">Limitations of the BMI</a><br>
+            <a href="https://www.nhlbi.nih.gov/health/educational/lose_wt/risk.htm">Assessing Your Risk</a><br>
+            <a href="https://www.nhlbi.nih.gov/health/educational/lose_wt/control.htm">Controlling Your Weight</a><br>
+            <a href="https://www.nhlbi.nih.gov/health/educational/lose_wt/eat/recipes.htm">Recipes</a>
+        </div>
+
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Imperial</a></li>
+                <li><a href="#tabs-2">Metric</a></li>
+            </ul>
+
+            <div id="tabs-1">
+                <form id="standardFill" action="sampleactionOne.html">
+                    <label for="feet" class="heightFt">Your Height: </label>
+                    <input type="number" id="heightInFeet" class="required digits"> ft. &nbsp;
+                    <label for="inches" class="heightIn"></label>
+                    <input type="number" id="heightInInches" class="required digits"> in. &nbsp;<br><br>
+                    <label for="weight" class="weightlb">Your Weight: </label>
+                    <input type="number" id="weightInPounds" class="required digits"> lbs. &nbsp;<br><br>
+                    <input type='submit' value='Submit' name="submit" id='BMIImperialFeetAndInches'><br><br><br>
+                    <label for="output" class="BMI">Your BMI:</label>
+                    <output type="number" id="BMIImperial"></output>
+                </form>
+                <br>
+            </div>
+
+            <div id="tabs-2">
+                <form id="metricFill" action="sampleactionOne.html">
+                    <label for="height" class="heightCent">Your Height: </label>
+                    <input type="number" id="heightInCentimeters" class="required digits"> cm. &nbsp;<br><br>
+                    <label for="weight" class="weightkg">Your Weight: </label>
+                    <input type="number" id="weightInKilos" class="required digits"> kg. &nbsp;<br><br>
+                    <input type='submit' value='Submit' name="submit" id='submitme'><br><br><br>
+                    <label for="output" class="BMI">Your BMI:</label>
+                    <output type="text" id="BMIMetric"></output>
+                </form>
+                <br>
+            </div>
+        </div>
+    </div>
+    <p id="result"></p>
+</body>
+
+</html>
