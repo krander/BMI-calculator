@@ -1,0 +1,39 @@
+/* BMI stylization */
+
+body {
+    background-color: #E7E7E7;
+}
+
+#TopContent {
+    font-family: sans-serif;
+}
+
+#SideBMI {
+    text-align: center;
+    float: right;
+}
+
+#tabs {
+    width: 20em;
+    height: 20em;
+    text-align: center;
+    float: left;
+}
+
+input {
+    width: 3.5em;
+}
+
+label.error {
+    display: block;
+    float: left;
+    color: #C70039;
+    font-size: 0.05em;
+    font-weight: bold;
+    text-align: center;
+}
+
+input.error {
+    background: rgba(199, 0, 57, 0.2);
+    border: 1px solid black;
+}
